@@ -1,7 +1,7 @@
 # hrext07-my-cruddy-app
 Create Read Update and Delete framework using JS
 
-## Tasks
+## BrainStorming
 my cruddy tic-tac-toe game
 
 ### Input: 
@@ -23,7 +23,7 @@ my cruddy tic-tac-toe game
 - Scoreboard: User can delete entries (Stretch goal - incorporate password!)
 - Ongoing games list: user can click on game and resume
 
-
+## Tasks
 ### Basic Reqs
 - [ ] Where to store data? (localstorage)
 - [ ] How to capture data? (input box)

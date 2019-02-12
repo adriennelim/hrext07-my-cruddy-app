@@ -1,48 +1,39 @@
-/*
-Init app
-interact with DOM
-interact with localstorage
-
- */
-
 $(document).ready(function(){
-  // this is where we jquery
-  //var keyData = 'ourKey'; // going to need to make this dynamic?
-
-
-  $('.btn-add').on('click', function(e){
-    console.log(e);
-    var keyData = $('.input-key').val();
-    var valueData = $('.input-value').val();
-    // write to db
-    localStorage.setItem(keyData, valueData);
-    // read from db
-    var displayText = keyData + ' | ' + localStorage.getItem(keyData);
-    // this only displays the last one? might want to switch to html
-    // and append a div
-    // <div class="display-data-item" data-keyValue="keyData">valueData</div>
-    // if you use backticks ` you can use ${templateLiterals}
-    // TODO make this vars make sense across the app
-    $('.container-data').html('<div class="display-data-item" data-keyValue="'+ keyData +'">'+valueData+'</div>');
-    $('.input-key').val('');
-    $('.input-value').val('');
+  var symbols = ['O', 'X'];
+  var turn = 0;
+  $('.ttt-board-square').click(function() {
+    if ((this).innerText === '' && turn % 2 === 0) {
+      turn++
+      return (this).append(symbols[1]);
+    }  else if ((this).innerText === '' && turn % 2 !== 0) {
+      turn++
+      return (this).append(symbols[0]);
+    }
   });
 
+  $('.btn-clear-board').click(function() { clearBoard() });
 
-  // update db
-    // need to expand when  more than 1 item is added
+  $('.btn-add').on('click', function(){
+    var player1 = formatName($('.input-name-player1').val()); 
+    var player2 = formatName($('.input-name-player2').val()); 
+    $('.ttt-players')[0].innerText = '';
+    $('.ttt-players')[0].innerText = player1 + ' vs ' + player2 + '!';
+    clearBoard();
+  });
 
-  // delete item
-  $('.container-data').on('click', '.display-data-item', function(e){
-    console.log(e.currentTarget.dataset.keyvalue);
-    var keyData = e.currentTarget.dataset.keyvalue;
-    localStorage.removeItem(keyData);
-    $('.container-data').text('');
-  });
-  // delete all?
-  $('.btn-clear').click(function(){
-    localStorage.clear();
-    $('.container-data').text('');
-  });
+  //tic-tac-toe game functions:
+  function clearBoard() {
+    turn = 0;
+    var tttSquares = document.getElementsByClassName('ttt-board-square');
+    for (var i = 0; i < 9; i++) {
+      tttSquares[i].innerText = '';
+    }
+  }
+
+  //helper functions:
+  function formatName(name) {
+    return name[0].toUpperCase() + name.slice(1).toLowerCase();
+  }
+
 
 });

@@ -1,0 +1,128 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #fcfbf9;
+    color: #2c2c2c;
+}
+
+header {
+    grid-area: header;
+    font-family: 'Allerta Stencil', sans-serif;
+    font-size: 60px;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    padding: 20px;
+    background-color: #ffffff;
+    border: 5px solid rgb(218, 81, 111);
+    border-radius: 5px;
+}
+
+button {
+    font-size: 12px;
+    padding: 5px;
+    margin: 5px auto 5px auto;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: rgb(218, 81, 111);
+    color: #ffffff;
+}
+
+input {
+    font-size: 12px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+/* Grid container & elements */
+.container-main {
+    display: grid;
+    align-items: start;
+    grid-template-columns: 1fr 200px 200px 200px 200px 200px 1fr;
+    grid-template-rows: auto auto auto auto 1fr;   
+    grid-template-areas: 
+        ". header header header header header ."
+        ". tictactoe tictactoe tictactoe players players ."
+        ". tictactoe tictactoe tictactoe scoreboard scoreboard ."
+        ". tictactoe tictactoe tictactoe savedgames savedgames ."
+        ". tictactoe tictactoe tictactoe . . .";
+}
+
+.container-form {
+    grid-area: players;
+}
+
+/* Scoreboard  - P1 vs P2, P1 wins! + timestamp */
+.scoreboard {
+    grid-area: scoreboard;
+}
+
+.scoreboard-list {
+    height: 120px;
+}
+
+/* Saved games  - P1 vs P2 + timestamp */
+.saved-games {
+    grid-area: savedgames;
+}
+
+.saved-games-list {
+    height: 50px;
+}
+
+
+
+.sidebar {
+    background-color: #ffffff;
+    border: 3px solid #67C2BF;
+    border-radius: 5px;
+    margin: 10px 40px 10px 20px;
+    text-align: center;
+}
+
+.sidebar-title {
+    background-color: #FFE28A;
+    font-weight: bold;
+    padding: 5px;
+    margin-bottom:5px;
+    font-size: 18px;
+}
+
+
+/* tic-tac-toe board */
+.ttt-container {
+    grid-area: tictactoe;
+    border-radius: 5px;
+    background-color: #ffffff;
+    padding: 20px;
+    margin: 10px 20px 20px 40px;
+    text-align: center;
+}
+
+.ttt-board {
+    width: 390px;
+    height: 390px;
+    margin: auto;
+    margin-bottom: 10px;
+    background-color: #FFC5B5;
+    padding: 5px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.ttt-board-square {
+    width: 120px;
+    height: 120px;
+    margin: 5px;
+    background-color: #FFE28A;
+}
+
+.ttt-players {
+    color:#67C2BF;
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}

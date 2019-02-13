@@ -23,7 +23,6 @@ $(document).ready(function(){
   $('.btn-clear-board').click(function() { 
     resetBoard(); 
     resetPlayers(); 
-    
     $('.ttt-board-square').on('click',function() {
     
       if ((this).innerText === '' && turn % 2 === 0) {

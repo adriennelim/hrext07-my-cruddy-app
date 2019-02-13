@@ -6,8 +6,7 @@ my cruddy tic-tac-toe game
 
 ### Input: 
 - Player 1 & Player 2 names
-- First player gets to pick symbol (X or O)
-- Tic-Tac-Toe game board
+- Tic-Tac-Toe game board - click on divs to play
 
 ### Output:
 - Game outcomes: Announce winner or a draw if it's a draw
@@ -16,12 +15,14 @@ my cruddy tic-tac-toe game
     - e.g. Stephen vs Merlin: It's a draw! date&timeStamp
 
 ### UI/UX Considerations:
-- Game Mode: Player 1 and 2 would take turns to play
-- Game Mode: Ends when all 9 boxes are filled
-- Game Mode: Can hit reset button any time
-- Game Mode: Can pause game and replay
-- Scoreboard: User can delete entries (Stretch goal - incorporate password!)
-- Ongoing games list: user can click on game and resume
+- [X] Game Mode: Player 1 and 2 would take turns to play
+- [X] Game Mode: Announce game outcome (Winner/Draw)
+- [X] Game Mode: Can reset board any time
+- [ ] Scoreboard: Show game outcomes with timeStamp
+- [ ] Scoreboard: User can delete entries
+- [ ] Saved Games: User can pause game and replay
+- [ ] Saved Games: user can click on game and resume
+
 
 ## Tasks
 ### Basic Reqs
@@ -34,3 +35,7 @@ my cruddy tic-tac-toe game
 ### Stretch goals!
 - [ ] Play against the computer
 - [ ] Play with another user on a different computer
+- [ ] Scoreboard: User can delete entries only if correct password is supplied
+- [ ] Make page more responsive to different screen sizes
+- [ ] First player gets to pick symbol (X or O)
+- [ ] Tic 'Tax' Toe !! 

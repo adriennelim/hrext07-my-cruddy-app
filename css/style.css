@@ -63,6 +63,11 @@ input {
     height: 120px;
 }
 
+.date-time {
+    color: #67C2BF;
+    font-size: 11px;
+}
+
 /* Saved games  - P1 vs P2 + timestamp */
 .saved-games {
     grid-area: savedgames;

@@ -4,25 +4,24 @@ $(document).ready(function(){
   var player1 = 'Player 1', player2 = 'Player 2';
   var gameboard = document.getElementsByClassName('ttt-board-square');
 
-  //Tic-Tac-Toe gameboard
-  $('.ttt-board-square').on('click',function() {
-    
-    if ((this).innerText === '' && turn % 2 === 0) {
-      $('.ttt-game-prompt')[0].innerText = 'It\'s ' + player2 + '\'s turn';
-      (this).append(symbols[1]);
-      if (!ticTacToe(turn)) { turn++; }
-      
-    } else if ((this).innerText === '' && turn % 2 !== 0) {
-      $('.ttt-game-prompt')[0].innerText = 'It\'s ' + player1 + '\'s turn';
-      (this).append(symbols[0]);
-      if (!ticTacToe(turn)) { turn++; }
-    }
+  //Button functions
+  $('.btn-play').on('click', function(){
+    player1 = formatName($('.input-name-player1').val()); 
+    player2 = formatName($('.input-name-player2').val()); 
+    $('.ttt-players')[0].innerText = player1 + ' vs ' + player2 + '!';
+    $('.ttt-game-prompt')[0].innerText = player1 + ' goes first!';
+    resetBoard();
+    playTicTacToe();
   });
 
-  //Button functions
   $('.btn-clear-board').click(function() { 
     resetBoard(); 
     resetPlayers(); 
+    playTicTacToe();
+  });
+
+  //Tic-Tac-Toe game:
+  function playTicTacToe() {
     $('.ttt-board-square').on('click',function() {
     
       if ((this).innerText === '' && turn % 2 === 0) {
@@ -36,17 +35,8 @@ $(document).ready(function(){
         if (!ticTacToe(turn)) { turn++; }
       }
     });
-  });
+  }
 
-  $('.btn-add').on('click', function(){
-    player1 = formatName($('.input-name-player1').val()); 
-    player2 = formatName($('.input-name-player2').val()); 
-    $('.ttt-players')[0].innerText = player1 + ' vs ' + player2 + '!';
-    $('.ttt-game-prompt')[0].innerText = player1 + ' goes first!';
-    resetBoard();
-  });
-
-  //Tic-Tac-Toe game:
   function ticTacToe (playerTurn) {
     if (isWinningCombo(gameboard[0].innerText, gameboard[1].innerText, gameboard[2].innerText) || 
         isWinningCombo(gameboard[3].innerText, gameboard[4].innerText, gameboard[5].innerText) ||

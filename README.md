@@ -19,10 +19,10 @@ my cruddy tic-tac-toe game
 - [X] Game Mode: Announce game outcome (Winner/Draw)
 - [X] Game Mode: Can reset board any time
 - [X] Scoreboard: Show game outcomes with timeStamp
-- [X] Scoreboard: Store games in local storage
-- [ ] Scoreboard: User can view previous games
-- [ ] Saved Games: User can pause game and replay
-- [ ] Saved Games: user can click on game and resume
+- [ ] Scoreboard: Store games in local storage
+- [X] Scoreboard: User can view previous games
+- [X] Saved Games: User can save unfinished games
+- [ ] Saved Games: user can click on game and resume playing
 
 
 ## Tasks
@@ -33,9 +33,11 @@ my cruddy tic-tac-toe game
 - [ ] How to view data? (style?)
 - [ ] UI/UX considerations (how are we going to use this)
 
-### Stretch goals!
+### Stretch goals/Nice to haves:
 - [ ] Play against the computer
 - [ ] Play with another user on a different computer
+- [ ] Add timer to game
+- [ ] Scoreboard: Sort completed games by game time and display top 5 fastest wins.
 - [ ] Scoreboard: Update code for timeStamp to provide some relative timing
 - [ ] Scoreboard: User can delete entries only if correct password is supplied
 - [ ] Update layout so user is prompted to enter player names 

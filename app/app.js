@@ -1,8 +1,9 @@
 $(document).ready(function(){
   var symbols = ['O', 'X'];
-  var turn = 0;
   var player1 = 'Player 1', player2 = 'Player 2';
+  var turn = 0;
   var gameboard = document.getElementsByClassName('ttt-board-square');
+  var isGameFinished = false;
 
   //Button functions
   $('.btn-play').on('click', function(){
@@ -16,12 +17,11 @@ $(document).ready(function(){
 
   $('.btn-save').on('click', function() {
     var board = getBoardStatus();
-    if (turn < 8 && !ticTacToe(turn)) {
+    if (turn < 8 && !isGameFinished) {
       $('.saved-games-list').prepend('<div class="date-time">' + moment().format('MMMM Do YYYY, h:mm a') + '</div>')
       $('.saved-games-list').prepend('<div class="saved-game-item">' + player1 + ' vs ' + player2 + ' </div>');
       console.log(board);
     }
-    
   });
 
   $('.btn-clear-board').click(function() { 
@@ -47,23 +47,25 @@ $(document).ready(function(){
   }
 
   function ticTacToe (playerTurn) {
-    if (isWinningCombo(gameboard[0].innerText, gameboard[1].innerText, gameboard[2].innerText) || 
-        isWinningCombo(gameboard[3].innerText, gameboard[4].innerText, gameboard[5].innerText) ||
-        isWinningCombo(gameboard[6].innerText, gameboard[7].innerText, gameboard[8].innerText) || 
-        isWinningCombo(gameboard[0].innerText, gameboard[3].innerText, gameboard[6].innerText) ||
-        isWinningCombo(gameboard[1].innerText, gameboard[4].innerText, gameboard[7].innerText) || 
-        isWinningCombo(gameboard[2].innerText, gameboard[5].innerText, gameboard[8].innerText) ||
-        isWinningCombo(gameboard[0].innerText, gameboard[4].innerText, gameboard[8].innerText) || 
-        isWinningCombo(gameboard[2].innerText, gameboard[4].innerText, gameboard[6].innerText) ) {
+    if (isWinningCombo(gameboard[0], gameboard[1], gameboard[2]) || 
+        isWinningCombo(gameboard[3], gameboard[4], gameboard[5]) ||
+        isWinningCombo(gameboard[6], gameboard[7], gameboard[8]) || 
+        isWinningCombo(gameboard[0], gameboard[3], gameboard[6]) ||
+        isWinningCombo(gameboard[1], gameboard[4], gameboard[7]) || 
+        isWinningCombo(gameboard[2], gameboard[5], gameboard[8]) ||
+        isWinningCombo(gameboard[0], gameboard[4], gameboard[8]) || 
+        isWinningCombo(gameboard[2], gameboard[4], gameboard[6]) ) {
           $('.ttt-game-prompt')[0].innerText = (playerTurn % 2 === 0 ? player1 : player2) + ' wins!';
           $('.scoreboard-list').prepend('<div class="date-time">' + moment().format('MMMM Do YYYY, h:mm a') + '</div>')
           $('.scoreboard-list').prepend('<div class="scoreboard-item">' + player1 + ' vs ' + player2 + ': ' + (playerTurn % 2 === 0 ? player1 : player2) + ' wins!</div>');
           $('.ttt-board-square').off('click');
+          isGameFinished = true;
           return true;
         } else if (playerTurn === 8) {
           $('.ttt-game-prompt')[0].innerText = 'It\'s a draw!';
           $('.scoreboard-list').prepend('<div class="date-time">' + moment().format('MMMM Do YYYY, h:mm a') + '</div>')
           $('.scoreboard-list').prepend('<div class="scoreboard-item">' + player1 + ' vs ' + player2 + ': ' + ' It\'s a draw!</div>');
+          isGameFinished = true;
           return true;
         } else {
           return false;
@@ -77,6 +79,7 @@ $(document).ready(function(){
 
   //tic-tac-toe reset functions:
   function resetBoard() {
+    isGameFinished = false;
     turn = 0;
     for (var square of gameboard) {
       square.innerText = '';
@@ -94,7 +97,7 @@ $(document).ready(function(){
 
   //tic-tac-toe game functions:
   function isWinningCombo (elem1, elem2, elem3) {
-    return (elem1 === elem2 && elem1 === elem3 && elem1 !== '');  
+    return (elem1.innerText === elem2.innerText && elem1.innerText === elem3.innerText && elem1.innerText !== '');  
   }
 
   function getBoardStatus() {

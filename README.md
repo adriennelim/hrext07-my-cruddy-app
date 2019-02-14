@@ -18,8 +18,9 @@ my cruddy tic-tac-toe game
 - [X] Game Mode: Player 1 and 2 would take turns to play
 - [X] Game Mode: Announce game outcome (Winner/Draw)
 - [X] Game Mode: Can reset board any time
-- [ ] Scoreboard: Show game outcomes with timeStamp
-- [ ] Scoreboard: User can delete entries
+- [X] Scoreboard: Show game outcomes with timeStamp
+- [X] Scoreboard: Store games in local storage
+- [ ] Scoreboard: User can view previous games
 - [ ] Saved Games: User can pause game and replay
 - [ ] Saved Games: user can click on game and resume
 
@@ -35,7 +36,9 @@ my cruddy tic-tac-toe game
 ### Stretch goals!
 - [ ] Play against the computer
 - [ ] Play with another user on a different computer
+- [ ] Scoreboard: Update code for timeStamp to provide some relative timing
 - [ ] Scoreboard: User can delete entries only if correct password is supplied
+- [ ] Update layout so user is prompted to enter player names 
 - [ ] Make page more responsive to different screen sizes
 - [ ] First player gets to pick symbol (X or O)
 - [ ] Tic 'Tax' Toe !! 

@@ -8,10 +8,20 @@ $(document).ready(function(){
   $('.btn-play').on('click', function(){
     player1 = formatName($('.input-name-player1').val()); 
     player2 = formatName($('.input-name-player2').val()); 
-    $('.ttt-players')[0].innerText = player1 + ' vs ' + player2 + '!';
+    $('.ttt-players')[0].innerText = player1 + ' vs ' + player2 + '!'; 
     $('.ttt-game-prompt')[0].innerText = player1 + ' goes first!';
     resetBoard();
     playTicTacToe();
+  });
+
+  $('.btn-save').on('click', function() {
+    var board = getBoardStatus();
+    if (turn < 8 && !ticTacToe(turn)) {
+      $('.saved-games-list').prepend('<div class="date-time">' + moment().format('MMMM Do YYYY, h:mm a') + '</div>')
+      $('.saved-games-list').prepend('<div class="saved-game-item">' + player1 + ' vs ' + player2 + ' </div>');
+      console.log(board);
+    }
+    
   });
 
   $('.btn-clear-board').click(function() { 
@@ -23,7 +33,6 @@ $(document).ready(function(){
   //Tic-Tac-Toe game:
   function playTicTacToe() {
     $('.ttt-board-square').on('click',function() {
-    
       if ((this).innerText === '' && turn % 2 === 0) {
         $('.ttt-game-prompt')[0].innerText = 'It\'s ' + player2 + '\'s turn';
         (this).append(symbols[1]);
@@ -48,14 +57,14 @@ $(document).ready(function(){
         isWinningCombo(gameboard[2].innerText, gameboard[4].innerText, gameboard[6].innerText) ) {
           $('.ttt-game-prompt')[0].innerText = (playerTurn % 2 === 0 ? player1 : player2) + ' wins!';
           $('.scoreboard-list').prepend('<div class="date-time">' + moment().format('MMMM Do YYYY, h:mm a') + '</div>')
-          $('.scoreboard-list').prepend('<div>' + player1 + ' vs ' + player2 + ': ' + (playerTurn % 2 === 0 ? player1 : player2) + ' wins!</div>');
+          $('.scoreboard-list').prepend('<div class="scoreboard-item">' + player1 + ' vs ' + player2 + ': ' + (playerTurn % 2 === 0 ? player1 : player2) + ' wins!</div>');
           $('.ttt-board-square').off('click');
           return true;
         } else if (playerTurn === 8) {
           $('.ttt-game-prompt')[0].innerText = 'It\'s a draw!';
           $('.scoreboard-list').prepend('<div class="date-time">' + moment().format('MMMM Do YYYY, h:mm a') + '</div>')
-          $('.scoreboard-list').prepend('<div>' + player1 + ' vs ' + player2 + ': ' + ' It\'s a draw!</div>');
-          return false;
+          $('.scoreboard-list').prepend('<div class="scoreboard-item">' + player1 + ' vs ' + player2 + ': ' + ' It\'s a draw!</div>');
+          return true;
         } else {
           return false;
         }
@@ -75,8 +84,10 @@ $(document).ready(function(){
   }
 
   function resetPlayers() {
-    player1 = 'Player 1'; 
-    player2 = 'Player 2';
+    if ($('.input-name-player1').val() === '' && $('.input-name-player2').val() === '') {
+      player1 = 'Player 1'; 
+      player2 = 'Player 2';
+    } 
     $('.ttt-players')[0].innerText = player1 + ' vs ' + player2 + '!';
     $('.ttt-game-prompt')[0].innerText = player1 + ' goes first!';
   }
@@ -86,6 +97,13 @@ $(document).ready(function(){
     return (elem1 === elem2 && elem1 === elem3 && elem1 !== '');  
   }
 
+  function getBoardStatus() {
+    var board = [];
+    for (var square of gameboard) {
+      board.push(square.innerText);
+    }
+    return board;
+  }
 
   //other helper functions:
   function formatName(name) {

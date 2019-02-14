@@ -23,10 +23,17 @@ button {
     margin: 5px auto 5px auto;
     border-radius: 5px;
     font-weight: bold;
+    background-color: rgb(218, 81, 111);
+    color: #ffffff;
 }
 
 button:hover {
-    background-color: rgb(218, 81, 111);
+    background-color: rgb(255, 183, 28);
+    color:  #2c2c2c;
+}
+
+.btn-save, .btn-play {
+    background-color: rgb(16, 92, 69);
     color: #ffffff;
 }
 
@@ -40,7 +47,7 @@ input {
 .container-main {
     display: grid;
     align-items: start;
-    grid-template-columns: 1fr 200px 200px 200px 200px 200px 1fr;
+    grid-template-columns: 1fr 220px 220px 220px 220px 220px 1fr;
     grid-template-rows: auto auto auto auto 1fr;   
     grid-template-areas: 
         ". header header header header header ."
@@ -60,7 +67,7 @@ input {
 }
 
 .scoreboard-list {
-    height: 120px;
+    min-height: 130px;
 }
 
 .date-time {
@@ -74,7 +81,11 @@ input {
 }
 
 .saved-games-list {
-    height: 50px;
+    min-height: 90px;
+}
+
+.saved-game-item, .scoreboard-item {
+    font-size: 14px;
 }
 
 

@@ -4,6 +4,23 @@ $(document).ready(function(){
   var turn = 0;
   var gameboard = document.getElementsByClassName('ttt-board-square');
   var isGameFinished = false;
+  var winner = '';
+  var gameCount = Number(window.localStorage.getItem('gameCount'));
+  if(!gameCount) {
+    gameCount = window.localStorage.setItem('gameCount', 1);
+  }
+  //var gameObj = {};
+
+  /*
+  game obj: 
+  game1: { 
+    player1: player1, 
+    player2: player2,
+    board: ["", "", "", "O", "X", "", "", "X", ""],
+    isGameFinished: true/false,
+    winner: ''
+  };
+  */
 
   //Button functions
   $('.btn-play').on('click', function(){
@@ -55,17 +72,28 @@ $(document).ready(function(){
         isWinningCombo(gameboard[2], gameboard[5], gameboard[8]) ||
         isWinningCombo(gameboard[0], gameboard[4], gameboard[8]) || 
         isWinningCombo(gameboard[2], gameboard[4], gameboard[6]) ) {
-          $('.ttt-game-prompt')[0].innerText = (playerTurn % 2 === 0 ? player1 : player2) + ' wins!';
-          $('.scoreboard-list').prepend('<div class="date-time">' + moment().format('MMMM Do YYYY, h:mm a') + '</div>')
-          $('.scoreboard-list').prepend('<div class="scoreboard-item">' + player1 + ' vs ' + player2 + ': ' + (playerTurn % 2 === 0 ? player1 : player2) + ' wins!</div>');
-          $('.ttt-board-square').off('click');
           isGameFinished = true;
+          winner = playerTurn % 2 === 0 ? player1 : player2;
+          $('.ttt-game-prompt')[0].innerText = winner + ' wins!';
+          $('.scoreboard-list').prepend('<div class="date-time">' + moment().format('MMMM Do YYYY, h:mm a') + '</div>')
+          $('.scoreboard-list').prepend('<div class="scoreboard-item">' + player1 + ' vs ' + player2 + ': ' + winner + ' wins!</div>');
+          $('.ttt-board-square').off('click');
+          var key =  ('game'+gameCount);
+          var value = createGameObj(player1, player2, playerTurn, getBoardStatus(), isGameFinished, winner);
+          window.localStorage.setItem(key,value);
+          //gameObj[('game'+gameCount)] = createGameObj(player1, player2, playerTurn, getBoardStatus(), isGameFinished, winner);
+          //console.log(gameObj);
           return true;
         } else if (playerTurn === 8) {
+          isGameFinished = true;
           $('.ttt-game-prompt')[0].innerText = 'It\'s a draw!';
           $('.scoreboard-list').prepend('<div class="date-time">' + moment().format('MMMM Do YYYY, h:mm a') + '</div>')
           $('.scoreboard-list').prepend('<div class="scoreboard-item">' + player1 + ' vs ' + player2 + ': ' + ' It\'s a draw!</div>');
-          isGameFinished = true;
+          var key =  ('game'+gameCount);
+          var value = createGameObj(player1, player2, playerTurn, getBoardStatus(), isGameFinished, winner);
+          window.localStorage.setItem(key,value);
+          //gameObj[('game'+gameCount)] = createGameObj(player1, player2, playerTurn, board, isGameFinished, winner);
+          //console.log(gameObj);
           return true;
         } else {
           return false;
@@ -81,6 +109,7 @@ $(document).ready(function(){
   function resetBoard() {
     isGameFinished = false;
     turn = 0;
+    winner = '';
     for (var square of gameboard) {
       square.innerText = '';
     }
@@ -102,7 +131,7 @@ $(document).ready(function(){
 
   function getBoardStatus() {
     var board = [];
-    for (var square of gameboard) {
+    for (var square of gameboard) { 
       board.push(square.innerText);
     }
     return board;
@@ -112,5 +141,30 @@ $(document).ready(function(){
   function formatName(name) {
     return name[0].toUpperCase() + name.slice(1).toLowerCase();
   }
+
+  function createGameObj (p1, p2, turn, boardStatus, isGameFinished, winner) {
+    var obj = {};
+    gameCount++;
+    window.localStorage.setItem('gameCount', gameCount);
+    obj.player1 = p1;
+    obj.player2 = p2;
+    obj.turn = turn;
+    obj.boardStatus = boardStatus;
+    obj.isGameFinished = isGameFinished;
+    obj.winner = winner;
+    return JSON.stringify(obj);
+  }
+
+
+  // //Parsing through keyname to get index, if storing data in an array of objects
+  // function getIndex(input) {
+  //   var idx = '';
+  //   for (var char of input.match(/game\d*/)[0]) {
+  //     if (/\d/.test(char)) {
+  //       idx += char;  
+  //     }
+  //   }
+  //   return Number(idx) - 1;
+  // }
 
 });

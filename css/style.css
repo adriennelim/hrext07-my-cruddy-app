@@ -89,6 +89,10 @@ input {
     font-size: 14px;
 }
 
+.saved-game-item:hover {
+    text-decoration: underline;
+}
+
 .buttons {
     grid-area: buttons;
     margin-top: -10px;

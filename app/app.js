@@ -6,9 +6,11 @@ $(document).ready(function(){
   var isGameFinished = false;
   var winner = '';
   var gameCount = Number(window.localStorage.getItem('gameCount'));
+
   if(!gameCount) {
-    gameCount = window.localStorage.setItem('gameCount', 1);
+    window.localStorage.setItem('gameCount', 1);
   }
+
   //var gameObj = {};
 
   /*
@@ -33,11 +35,13 @@ $(document).ready(function(){
   });
 
   $('.btn-save').on('click', function() {
-    var board = getBoardStatus();
     if (turn < 8 && !isGameFinished) {
+      var key =  ('game'+gameCount);
+      var value = createGameObj(player1, player2, turn, getBoardStatus(), isGameFinished, winner);
+      window.localStorage.setItem(key,value);
       $('.saved-games-list').prepend('<div class="date-time">' + moment().format('MMMM Do YYYY, h:mm a') + '</div>')
-      $('.saved-games-list').prepend('<div class="saved-game-item">' + player1 + ' vs ' + player2 + ' </div>');
-      console.log(board);
+      $('.saved-games-list').prepend('<div class="saved-game-item' + key + '">' + player1 + ' vs ' + player2 + ' </div>');
+      $('.ttt-board-square').off('click');
     }
   });
 
@@ -45,6 +49,13 @@ $(document).ready(function(){
     resetBoard(); 
     resetPlayers(); 
     playTicTacToe();
+  });
+
+  $('.btn-clear').click(function() { 
+    resetBoard(); 
+    resetPlayers(); 
+    window.localStorage.clear();
+    window.localStorage.setItem('gameCount', 1);
   });
 
   //Tic-Tac-Toe game:
@@ -144,7 +155,7 @@ $(document).ready(function(){
 
   function createGameObj (p1, p2, turn, boardStatus, isGameFinished, winner) {
     var obj = {};
-    gameCount++;
+    gameCount = Number(window.localStorage.getItem('gameCount')) + 1;
     window.localStorage.setItem('gameCount', gameCount);
     obj.player1 = p1;
     obj.player2 = p2;
@@ -152,8 +163,10 @@ $(document).ready(function(){
     obj.boardStatus = boardStatus;
     obj.isGameFinished = isGameFinished;
     obj.winner = winner;
+    obj.date = moment().format('MMMM Do YYYY, h:mm a');
     return JSON.stringify(obj);
   }
+
 
 
   // //Parsing through keyname to get index, if storing data in an array of objects

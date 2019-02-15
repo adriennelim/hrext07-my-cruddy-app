@@ -10,19 +10,8 @@ $(document).ready(function(){
   if(!gameCount) {
     window.localStorage.setItem('gameCount', 1);
   }
-
-  //var gameObj = {};
-
-  /*
-  game obj: 
-  game1: { 
-    player1: player1, 
-    player2: player2,
-    board: ["", "", "", "O", "X", "", "", "X", ""],
-    isGameFinished: true/false,
-    winner: ''
-  };
-  */
+  populateSavedGame();
+  populateScoreboard();
 
   //Button functions
   $('.btn-play').on('click', function(){
@@ -32,15 +21,18 @@ $(document).ready(function(){
     $('.ttt-game-prompt')[0].innerText = player1 + ' goes first!';
     resetBoard();
     playTicTacToe();
+    populateSavedGame();
+    populateScoreboard();
   });
 
   $('.btn-save').on('click', function() {
     if (turn < 8 && !isGameFinished) {
       var key =  ('game'+gameCount);
-      var value = createGameObj(player1, player2, turn, getBoardStatus(), isGameFinished, winner);
+      var value = createGameObj(player1, player2, turn, getBoardStatus(), isGameFinished, winner, key);
       window.localStorage.setItem(key,value);
-      $('.saved-games-list').prepend('<div class="date-time">' + moment().format('MMMM Do YYYY, h:mm a') + '</div>')
-      $('.saved-games-list').prepend('<div class="saved-game-item' + key + '">' + player1 + ' vs ' + player2 + ' </div>');
+      // $('.saved-games-list').prepend('<div class="date-time">' + moment().format('MMMM Do YYYY, h:mm a') + '</div>')
+      // $('.saved-games-list').prepend('<div class="saved-game-item ' + key + '">' + player1 + ' vs ' + player2 + ' </div>');
+      populateSavedGame();
       $('.ttt-board-square').off('click');
     }
   });
@@ -49,13 +41,30 @@ $(document).ready(function(){
     resetBoard(); 
     resetPlayers(); 
     playTicTacToe();
+    populateSavedGame();
+    populateScoreboard();
   });
 
   $('.btn-clear').click(function() { 
     resetBoard(); 
     resetPlayers(); 
+    $('.saved-games-list').html('');
+    $('.scoreboard-list').html('');
     window.localStorage.clear();
     window.localStorage.setItem('gameCount', 1);
+  });
+
+  //clicking on the saved games
+  $('.saved-game-item').on('click', function(){
+    var savedGame = JSON.parse(window.localStorage[(this).classList[1]]);
+    var board = savedGame.boardStatus;
+    for (var i=0; i<9; i++) {
+      gameboard[i].innerText = board[i];
+    }
+    turn = savedGame.turn;
+    player1 = savedGame.player1;
+    player2 = savedGame.player2;
+    playTicTacToe();
   });
 
   //Tic-Tac-Toe game:
@@ -86,22 +95,25 @@ $(document).ready(function(){
           isGameFinished = true;
           winner = playerTurn % 2 === 0 ? player1 : player2;
           $('.ttt-game-prompt')[0].innerText = winner + ' wins!';
-          $('.scoreboard-list').prepend('<div class="date-time">' + moment().format('MMMM Do YYYY, h:mm a') + '</div>')
-          $('.scoreboard-list').prepend('<div class="scoreboard-item">' + player1 + ' vs ' + player2 + ': ' + winner + ' wins!</div>');
+          // $('.scoreboard-list').prepend('<div class="date-time">' + moment().format('MMMM Do YYYY, h:mm a') + '</div>')
+          // $('.scoreboard-list').prepend('<div class="scoreboard-item">' + player1 + ' vs ' + player2 + ': ' + winner + ' wins!</div>');
+          
           $('.ttt-board-square').off('click');
           var key =  ('game'+gameCount);
-          var value = createGameObj(player1, player2, playerTurn, getBoardStatus(), isGameFinished, winner);
+          var value = createGameObj(player1, player2, playerTurn, getBoardStatus(), isGameFinished, winner, key);
           window.localStorage.setItem(key,value);
           //gameObj[('game'+gameCount)] = createGameObj(player1, player2, playerTurn, getBoardStatus(), isGameFinished, winner);
           //console.log(gameObj);
+          populateScoreboard();
           return true;
         } else if (playerTurn === 8) {
           isGameFinished = true;
           $('.ttt-game-prompt')[0].innerText = 'It\'s a draw!';
-          $('.scoreboard-list').prepend('<div class="date-time">' + moment().format('MMMM Do YYYY, h:mm a') + '</div>')
-          $('.scoreboard-list').prepend('<div class="scoreboard-item">' + player1 + ' vs ' + player2 + ': ' + ' It\'s a draw!</div>');
+          // $('.scoreboard-list').prepend('<div class="date-time">' + moment().format('MMMM Do YYYY, h:mm a') + '</div>')
+          // $('.scoreboard-list').prepend('<div class="scoreboard-item">' + player1 + ' vs ' + player2 + ': ' + ' It\'s a draw!</div>');
+          populateScoreboard();
           var key =  ('game'+gameCount);
-          var value = createGameObj(player1, player2, playerTurn, getBoardStatus(), isGameFinished, winner);
+          var value = createGameObj(player1, player2, playerTurn, getBoardStatus(), isGameFinished, winner, key);
           window.localStorage.setItem(key,value);
           //gameObj[('game'+gameCount)] = createGameObj(player1, player2, playerTurn, board, isGameFinished, winner);
           //console.log(gameObj);
@@ -153,7 +165,7 @@ $(document).ready(function(){
     return name[0].toUpperCase() + name.slice(1).toLowerCase();
   }
 
-  function createGameObj (p1, p2, turn, boardStatus, isGameFinished, winner) {
+  function createGameObj (p1, p2, turn, boardStatus, isGameFinished, winner, keyName) {
     var obj = {};
     gameCount = Number(window.localStorage.getItem('gameCount')) + 1;
     window.localStorage.setItem('gameCount', gameCount);
@@ -163,11 +175,49 @@ $(document).ready(function(){
     obj.boardStatus = boardStatus;
     obj.isGameFinished = isGameFinished;
     obj.winner = winner;
-    obj.date = moment().format('MMMM Do YYYY, h:mm a');
+    obj.keyName = keyName;
+    obj.dateStamp = moment().format('MMMM Do YYYY, h:mm a');
     return JSON.stringify(obj);
   }
 
+  //will only populate the div with the last 3 saved games
+  function populateSavedGame() {
+    $('.saved-games-list').html('');
+    var mapped = Object.keys(window.localStorage).map(function(key){
+      return JSON.parse(window.localStorage[key]);
+    })
 
+    var unfinished = mapped.filter(function(game) {
+      return !game.isGameFinished && typeof game === 'object';
+    })
+
+    for (var i = unfinished.length>3 ? unfinished.length-3 : 0; i < unfinished.length; i++ ) {
+      $('.saved-games-list').prepend('<div class="date-time">' + unfinished[i].dateStamp + '</div>')
+      $('.saved-games-list').prepend('<div class="saved-game-item ' + unfinished[i].keyName + '">' + unfinished[i].player1 + ' vs ' + unfinished[i].player2 + ' </div>');
+    }
+  };
+
+  //will only populate the div with the last 3 played games
+  function populateScoreboard() {
+    $('.scoreboard-list').html('');
+    var mapped = Object.keys(window.localStorage).map(function(key){
+      return JSON.parse(window.localStorage[key]);
+    })
+
+    var finished = mapped.filter(function(game) {
+      return game.isGameFinished && typeof game === 'object';
+    })
+
+    for (var i = finished.length>3 ? finished.length-3 : 0; i < finished.length; i++ ) {
+      $('.scoreboard-list').prepend('<div class="date-time">' + finished[i].dateStamp + '</div>');
+      if (finished[i].winner !== '') {
+        $('.scoreboard-list').prepend('<div class="scoreboard-item">' + finished[i].player1 + ' vs ' + finished[i].player2 + ': ' + finished[i].winner + ' wins!</div>');
+      } else {
+        $('.scoreboard-list').prepend('<div class="scoreboard-item">' + finished[i].player1 + ' vs ' + finished[i].player2 + ': ' + 'It\'s a draw!</div>');
+      }
+    }
+  };
+  
 
   // //Parsing through keyname to get index, if storing data in an array of objects
   // function getIndex(input) {

@@ -6,6 +6,7 @@ $(document).ready(function(){
   var isGameFinished = false;
   var winner = '';
   var gameCount = Number(window.localStorage.getItem('gameCount'));
+  var gameKey;
 
   if(!gameCount) {
     window.localStorage.setItem('gameCount', 1);
@@ -52,11 +53,18 @@ $(document).ready(function(){
     $('.scoreboard-list').html('');
     window.localStorage.clear();
     window.localStorage.setItem('gameCount', 1);
+    gameCount = 1;
+  });
+
+  $('.btn-delete').click(function(){
+    window.localStorage.removeItem(gameKey);
+    populateSavedGame();
   });
 
   //clicking on the saved games
   $('.saved-game-item').on('click', function(){
-    var savedGame = JSON.parse(window.localStorage[(this).classList[1]]);
+    gameKey = (this).classList[1];
+    var savedGame = JSON.parse(window.localStorage[gameKey]);
     var board = savedGame.boardStatus;
     for (var i=0; i<9; i++) {
       gameboard[i].innerText = board[i];
@@ -64,6 +72,13 @@ $(document).ready(function(){
     turn = savedGame.turn;
     player1 = savedGame.player1;
     player2 = savedGame.player2;
+    $('.ttt-players')[0].innerText = player1 + ' vs ' + player2 + '!';
+    if (turn % 2 === 0) {
+      $('.ttt-game-prompt')[0].innerText = 'It\'s ' + player2 + '\'s turn';
+    } else {
+      $('.ttt-game-prompt')[0].innerText = 'It\'s ' + player1 + '\'s turn';
+    }
+
     playTicTacToe();
   });
 

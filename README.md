@@ -19,19 +19,19 @@ my cruddy tic-tac-toe game
 - [X] Game Mode: Announce game outcome (Winner/Draw)
 - [X] Game Mode: Can reset board any time
 - [X] Scoreboard: Show game outcomes with timeStamp
-- [ ] Scoreboard: Store games in local storage
+- [X] Scoreboard: Store games in local storage
 - [X] Scoreboard: User can view previous games
 - [X] Saved Games: User can save unfinished games
-- [ ] Saved Games: user can click on game and resume playing
+- [X] Saved Games: user can click on game and resume playing
 
 
 ## Tasks
 ### Basic Reqs
-- [ ] Where to store data? (localstorage)
-- [ ] How to capture data? (input box)
-- [ ] How to modify data? (update action, delete action)
-- [ ] How to view data? (style?)
-- [ ] UI/UX considerations (how are we going to use this)
+- [X] Where to store data? (localstorage)
+- [X] How to capture data? (input box)
+- [X] How to modify data? (update action, delete action)
+- [X] How to view data? (style?)
+- [X] UI/UX considerations (how are we going to use this)
 
 ### Stretch goals/Nice to haves:
 - [ ] Play against the computer
